@@ -1,6 +1,6 @@
 # 공부한 내용
 
----
+
 
 ## 1. 엔티티란 무엇인가?
 
@@ -10,21 +10,23 @@
 
 인스턴스란 것도 있는데, 이것도 객체의 인스턴스와 비슷하다. 자동차(엔티티) → 아반떼, 소나타(인스턴스) 이런 느낌이다.
 
+
 ## 2. 엔티티와 인스턴스 표기법
 
 엔티티와 인스턴스는 다음과 같은 식으로 많이 표기한다.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/fd5cf61c-8771-4922-94ea-2c7661b44869/Untitled.png)
+[![Untitled](https://file.notion.so/f/f/5486ac02-837a-4340-b853-a8cd7b03f65f/fd5cf61c-8771-4922-94ea-2c7661b44869/Untitled.png?id=2948edaa-e610-4561-8802-760e92fa7a34&table=block&spaceId=5486ac02-837a-4340-b853-a8cd7b03f65f&expirationTimestamp=1707991200000&signature=Fnwnq1VBb0oFviXvA-hXCZBWnIraENj-vhajL5eTAVE&downloadName=Untitled.png)
 
 근데 ERD는 솔직히 많이 쓴다쳐도 오른쪽 테이블은 많이 못 본 것 같다. ㅋㅋ
 
 IE 표기법, Barker 표기법이라는 것도 있다.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/89156750-2817-43ee-8657-4150c0a2ac68/Untitled.png)
+![Untitled](https://file.notion.so/f/f/5486ac02-837a-4340-b853-a8cd7b03f65f/89156750-2817-43ee-8657-4150c0a2ac68/Untitled.png?id=60793e26-9c57-4eca-84d7-45e1cbe09699&table=block&spaceId=5486ac02-837a-4340-b853-a8cd7b03f65f&expirationTimestamp=1707991200000&signature=LdrCQd0FafgKtBaIpB3szX7fgfyJTTA-taeVT8-6-x4&downloadName=Untitled.png)
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/eb9de953-53f6-483c-8292-4bf20c206b7d/Untitled.png)
+![Untitled](https://file.notion.so/f/f/5486ac02-837a-4340-b853-a8cd7b03f65f/eb9de953-53f6-483c-8292-4bf20c206b7d/Untitled.png?id=c5c7a78a-9b76-4ded-932c-906a15680136&table=block&spaceId=5486ac02-837a-4340-b853-a8cd7b03f65f&expirationTimestamp=1707991200000&signature=93JJ6PiJMq85LV7sVwnhq_m7sgfKdcgBBWK8OkPfdMU&downloadName=Untitled.png)
 
 내 경험상으로는 IE 표기법을 많이 봤다. 이런 식으로 주로 표현하는 것 같다. 생긴 거는 자바에서의 클래스 다이어그램과 유사하게 생겼다.
+
 
 ## 3. 엔티티의 특징
 
@@ -38,6 +40,7 @@ IE 표기법, Barker 표기법이라는 것도 있다.
     - 인스턴스 각각을 구분하기 위한 식별자가 있어야 한다. → Primary Key를 말하는 것 같다.
     - 엔티티는 다른 엔티티와의 관계가 있어야 한다. → 혼자 덩그러니 놓여진 엔티티는 잘못 설계된 것
         - 단 특수한 목적을 가진 엔티티일 경우, 관계를 가지지 않을 수도 있다. (ex. 통계, 코드, 시스템)
+     
 
 ## 4. 엔티티의 분류
 
@@ -53,6 +56,7 @@ IE 표기법, Barker 표기법이라는 것도 있다.
 
 솔직히 이건 시험 때 말고 딱히 외울 일이 없을 것 같다.
 
+
 ## 5. 엔티티 명명규칙
 
 - 현업에서 많이 사용하는 단어 사용
@@ -61,15 +65,15 @@ IE 표기법, Barker 표기법이라는 것도 있다.
 - 겹치지 않는 이름
 - 의미가 애매모호하지 않은 이름
 
-# 어려웠던 내용
 
----
+# 어려웠던 내용
 
 아주 어려운 내용은 없었던 것 같다.
 
+
 # 궁금한 내용 / 부족한 내용
 
----
+
 
 ## 1. 엔티티 분류의 가능성과 실제 사용률
 
@@ -77,15 +81,16 @@ IE 표기법, Barker 표기법이라는 것도 있다.
 - 당장 설명을 봐도 분류 기준에 따라 아주 다양하게 분류가 가능하고, 상황에 따라서 분류가 달라질 수 있을 것 같다.
 - 솔직히 이런 식으로 분류를 하는 것이 그렇게 의미가 있나? 라는 생각도 들고, 현업에서 이러한 절차를 거치는지 궁금한다.
 
+
 ## 2. 엔티티와 객체의 근본적인 차이
 
 - 설명을 읽다보니 엔티티와 객체가 거의 똑같이 느껴졌다.
 - 엔티티와 객체의 근본적인 차이는 무엇일까? 라는 생각이 들어서 이에 대해 조사해보고자 한다.
     - (TBU…)
 
+
 # 느낀점
 
----
 
 ## 1. 명명규칙에 관하여
 
