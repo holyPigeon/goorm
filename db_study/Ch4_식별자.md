@@ -70,7 +70,7 @@
 
 아래 흐름도를 참고하여 비식별관계를 선정한다.
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/fcab6405-6e28-435e-b0dc-dc8ab09b97b7/Untitled.png)
+![](https://dataonair.or.kr/publishing/img/knowledge/SQL_069.jpg)
 
 1. 관계의 강/약을 분석하라는 것은, 말 그대로 부모와 자식이 얼마나 연관성이 있는지를 보는 것이다.
 2. 자식테이블이 부모의 PK만으로는 부족해서 독립된 PK를 가져야 할 경우를 뜻한다.
