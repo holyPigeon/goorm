@@ -14,7 +14,7 @@
 
 관계에는 존재에 의한 관계와 행위에 의한 관계가 존재한다.
 
-!https://dataonair.or.kr/publishing/img/knowledge/SQL_040.jpg
+![](https://dataonair.or.kr/publishing/img/knowledge/SQL_040.jpg)
 
 ERD에서는 이 두 개를 구분하지 않지만, 클래스 다이어그램에서는 이것을 구분한다.
 
@@ -25,7 +25,7 @@ ERD에서는 이 두 개를 구분하지 않지만, 클래스 다이어그램에
     - 관계차수 → 1:1, 1:M, M:N
     - 관계선택사양 → 필수 관계, 선택 관계
 
-!https://dataonair.or.kr/publishing/img/knowledge/SQL_046.jpg
+![](https://dataonair.or.kr/publishing/img/knowledge/SQL_046.jpg)
 
 - 관계명의 경우, 주로 ~~한다의 동사형을 사용한다.
 - 관계차수의 경우, 까마귀발 표시를 보면 1:1인지, 1:M인지, M:N인지 구분할 수 있다.
