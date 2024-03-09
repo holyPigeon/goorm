@@ -14,8 +14,8 @@ JOIN 연산 자체는 2개의 테이블 대상으로 진행된다.
 두 개 테이블 간의 컬럼값이 정확하게 일치할 때 사용되는 JOIN 방법이다.
 
 ```sql
-SELECT d.deptname, e.ename 
-FROM dept d, emp e 
+SELECT d.deptname, e.ename
+FROM dept d, emp e
 WHERE e.deptno = d.deptno;
 ```
 
@@ -26,16 +26,16 @@ EQUI JOIN은 보통 PK ↔ FK의 관계를 기반으로 성립되지만, 그렇�
 ```sql
 <일반적 케이스>
 
-SELECT PLAYER.PLAYER_NAME 선수명, TEAM.TEAM_NAME 소속팀명 
-FROM PLAYER, TEAM 
-WHERE PLAYER.TEAM_ID = TEAM.TEAM_ID; 
+SELECT PLAYER.PLAYER_NAME 선수명, TEAM.TEAM_NAME 소속팀명
+FROM PLAYER, TEAM
+WHERE PLAYER.TEAM_ID = TEAM.TEAM_ID;
 
 <INNER JOIN 사용 케이스>
 
-SELECT PLAYER.PLAYER_NAME 선수명, TEAM.TEAM_NAME 소속팀명 
-FROM PLAYER 
-INNER JOIN TEAM 
-ON PLAYER.TEAM_ID = TEAM.TEAM_ID;
+SELECT PLAYER.PLAYER_NAME 선수명, TEAM.TEAM_NAME 소속팀명
+FROM PLAYER
+         INNER JOIN TEAM
+                    ON PLAYER.TEAM_ID = TEAM.TEAM_ID;
 ```
 
 예시는 다음과 같다.
@@ -94,7 +94,24 @@ ORDER BY 선수명;
 # 어려웠던 내용
 
 
+글을 보고 쿼리를 보면 어느정도 이해가 되는 편인데,
+
+테이블과 조건을 떡하니 주고 이대로 쿼리를 나 혼자 짜봐라! 라고 하면 좀 힘들 것 같다. ㅋㅋㅋ
+
+확실히 이 부분은 실습이 필요한 부분인 것 같은데, 솔직히 실습해보기 너무 귀찮다… SQLD 문제집 같은 게 있으면 찾아보고 싶은데 나중에 기회가 되면 그런데서 문제를 찾아봐야 할 것 같다.
+
 # 궁금한 내용 / 부족한 내용
 
 
+## Q1. JOIN 문에서는 주로 어떤 쿼리 튜닝이 이루어질까?
+
+JOIN 작업에서 주로 튜닝이 이루어진다는 글을 보고 정확히 어떤 튜닝 작업이 있는지 알아보게 됐다.
+
 # 느낀점
+
+
+약간 생소한 부분도 있었지만 대체로 아는 부분이라 쉽게 갔던 것 같다!
+
+하지만 앞에 나왔던 집계 함수, ORDER BY 절, HAVING 절이 모두 섞이게 되면 상당히 지옥일 것 같다.
+
+기본기를 잘 쌓으면서 가야 나중에 고생하지 않을 것 같다.
