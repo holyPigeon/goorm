@@ -14,8 +14,8 @@ JOIN 연산 자체는 2개의 테이블 대상으로 진행된다.
 두 개 테이블 간의 컬럼값이 정확하게 일치할 때 사용되는 JOIN 방법이다.
 
 ```sql
-SELECT d.deptname, e.ename 
-FROM dept d, emp e 
+SELECT d.deptname, e.ename
+FROM dept d, emp e
 WHERE e.deptno = d.deptno;
 ```
 
@@ -37,6 +37,48 @@ FROM PLAYER
 INNER JOIN TEAM 
 ON PLAYER.TEAM_ID = TEAM.TEAM_ID;
 ```
+
+예시는 다음과 같다.
+
+축구 선수들이 있는데, 개별 선수들의 팀 이름이나 연고지를 알고 싶을 때 EQUI JOIN을 사용 가능하다.
+
+!https://dataonair.or.kr/publishing/img/knowledge/SQL_196.jpg
+
+당연하게도, 아래와 같이 뒤에 여러가지 조건을 추가할 수 있다.
+
+```sql
+<일반적 케이스>
+
+SELECT P.PLAYER_NAME 선수명, P.BACK_NO 백넘버, T.REGION_NAME 연고지, T.TEAM_NAME 팀명 
+FROM PLAYER P, TEAM T 
+WHERE P.TEAM_ID = T.TEAM_ID AND P.POSITION = 'GK' 
+ORDER BY P.BACK_NO; 
+
+<INNER JOIN 사용 케이스>
+
+SELECT P.PLAYER_NAME 선수명, P.BACK_NO 백넘버, T.REGION_NAME 연고지, T.TEAM_NAME 팀명 
+FROM PLAYER P 
+INNER JOIN TEAM T 
+ON P.TEAM_ID = T.TEAM_ID 
+WHERE P.POSITION = 'GK' 
+ORDER BY P.BACK_NO;
+```
+
+꼭 주의할 점은, 칼럼 앞에 꼭 테이블 별칭을 붙여주어야 한다는 것이다.
+
+일단 당장 칼럼 중복이 있으면 쿼리가 작동하지 않게 되고, 중복이 없더라도 추후에 다른 칼럼이 추가되면서 중복 문제가 생길 수 있기 때문에 꼭 조심해야 한다.
+
+## 3. Non EQUI JOIN
+
+다음과 같이 꼭 “=” 연산자를 사용하지 않는 Non EQUI JOIN도 가능하다.
+
+```sql
+SELECT E.ENAME 사원명, E.SAL 급여, S.GRADE 급여등급 
+FROM EMP E, SALGRADE S 
+WHERE E.SAL BETWEEN S.LOSAL AND S.HISAL;
+```
+
+## 4. 3개 이상의 TABLE JOIN
 
 # 어려웠던 내용
 
