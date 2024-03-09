@@ -14,8 +14,8 @@ JOIN 연산 자체는 2개의 테이블 대상으로 진행된다.
 두 개 테이블 간의 컬럼값이 정확하게 일치할 때 사용되는 JOIN 방법이다.
 
 ```sql
-SELECT d.deptname, e.ename
-FROM dept d, emp e
+SELECT d.deptname, e.ename 
+FROM dept d, emp e 
 WHERE e.deptno = d.deptno;
 ```
 
@@ -79,6 +79,17 @@ WHERE E.SAL BETWEEN S.LOSAL AND S.HISAL;
 ```
 
 ## 4. 3개 이상의 TABLE JOIN
+
+서로 연관관계가 없는 두 테이블의 경우, 중간에 매개체가 되는 테이블이 껴서 총 3개 이상을 JOIN 해야 하는 상황이 발생할 수 있다.
+
+아래와 같이 WHERE 절에 “=” 연산자가 AND를 통해 2번 들어가는 식으로 쿼리가 구성된다.
+
+```sql
+SELECT P.PLAYER_NAME 선수명, P.POSITION 포지션, T.REGION_NAME 연고지, T.TEAM_NAME 팀명, S.STADIUM_NAME 구장명 
+FROM PLAYER P, TEAM T, STADIUM S 
+WHERE P.TEAM_ID = T.TEAM_ID AND T.STADIUM_ID = S.STADIUM_ID 
+ORDER BY 선수명; 
+```
 
 # 어려웠던 내용
 
