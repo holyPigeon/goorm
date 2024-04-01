@@ -113,6 +113,37 @@ BEGIN
 END; /
 ```
 
+## **6. Trigger의 생성과 활용**
+
+트리거란, 말 그대로 어떤 상황이 발생했을 때 트리거가 되어 자동으로 실행되는 로직을 뜻한다.
+
+주로 INSERT, UPDATE와 같은 DML문이 수행되었을 때, DB 상에서 자동으로 로직을 실행한다.
+
+예제 코드
+
+```sql
+CREATE OR REPLACE Trigger SUMMARY_SALES
+
+ ---------------- ① 
+ AFTER INSERT ON ORDER_LIST FOR EACH ROW DECLARE 
+ ---------------- ② 
+ o_date ORDER_LIST.order_date%TYPE; o_prod ORDER_LIST.product%TYPE; 
+ BEGIN 
+	 o_date := :NEW.order_date; 
+	 o_prod := :NEW.product; 
+	 UPDATE SALES_PER_DATE 
+	 ---------------- ③ 
+	 SET qty = qty + :NEW.qty, amount = amount + :
+	 NEW.amount WHERE sale_date = o_date AND product = o_prod; 
+	 if SQL%NOTFOUND then 
+	 ---------------- ④ 
+	 INSERT INTO SALES_PER_DATE VALUES(o_date, o_prod, :NEW.qty, :NEW.amount); 
+	 end if; 
+ END; /
+```
+
+스읍… 이것도 솔직히 쓸 일이 있을지 모르겠다..
+
 # 궁금한 내용 / 부족한 내용
 
 
