@@ -28,6 +28,18 @@ PL/SQL이 뭐냐 → 절차형 SQL을 영어로 한 것
 - BEGIN ~ END → SQL문 쿼리와 여러가지 비교, 제어문 등이 들어간다.
 - EXCEPTION → `BEGIN ~ END` 절에서 발생한 에러를 핸들링한다.
 
+### **PL/SQL 기본 문법(Syntax)**
+
+프로시저의 생성 문법은 다음과 같다.
+
+```sql
+CREATE [OR REPLACE] 
+Procedure [Procedure_name] 
+( argument1 [mode] data_type1, argument2 [mode] date_type2, ... ... ) 
+IS [AS] ... ... 
+BEGIN ... ... EXCEPTION ... ... END; /
+```
+
 # 궁금한 내용 / 부족한 내용
 
 
