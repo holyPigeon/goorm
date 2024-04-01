@@ -12,7 +12,21 @@ DCL은 데이터베이스 상에서 유저를 생성하고 권한을 관리할 �
 
 ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/f91614f6-d417-482f-b924-4b57028bdc1e/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-04-01_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_3.32.43.png)
 
+### **유저 생성과 시스템 권한 부여**
 
+O 표시된 오브젝트에만 해당 명령어를 사용할 수 있다.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/fe72cead-1c63-4c3b-932a-bc2f764a06b0/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-04-01_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_3.37.19.png)
+
+다음과 같이 PJS 유저로 접속하여 SCOTT 유저에게 MENU 테이블에 대한 권한을 부여할 수 있다.
+
+```sql
+Oracle CONN PJS/KOREA7 // 연결되었다.
+
+INSERT INTO MENU VALUES (1, '화이팅'); // 1개의 행이 만들어졌다. 
+COMMIT; // 커밋이 완료되었다. 
+GRANT SELECT ON MENU TO SCOTT;
+```
 
 # 궁금한 내용 / 부족한 내용
 
