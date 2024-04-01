@@ -44,6 +44,75 @@ BEGIN ... ... EXCEPTION ... ... END; /
 
 T-SQL은 오라클이 아닌 SQL Server를 위한 절차형 언어이므로 스킵한다.
 
+## 4. Procedure의 생성과 활용
+
+SCOTT 유저가 소유하고 있는 DEPT 테이블에 새로운 부서를 등록하는 과정을 다음과 같은 플로우차트로 나타낼 수 있다.
+
+!https://dataonair.or.kr/publishing/img/knowledge/SQL_233.jpg
+
+예시 프로시저 코드이다. → 개지옥이다 ㅋㅋ 써도 지피티한테 부탁하지 직접 쓸 일은 절대 없을 듯
+
+```sql
+CREATE OR REPLACE 
+Procedure p_DEPT_insert 
+------------- ① 
+( v_DEPTNO in number, v_dname in varchar2, v_loc in varchar2, v_result out varchar2) IS cnt number := 0;
+
+BEGIN 
+	SELECT COUNT(*) 
+	INTO CNT 
+	------------- ② 
+	FROM DEPT 
+	
+	WHERE DEPTNO = v_DEPTNO AND ROWNUM = 1; 
+	
+	if cnt > 0 then 
+	------------- ③ 
+	v_result := '이미 등록된 부서번호이다'; 
+	
+	else INSERT INTO DEPT (DEPTNO, DNAME, LOC)
+	------------- ④ 
+	VALUES (v_DEPTNO, v_dname, v_loc); 
+	
+	COMMIT; 
+	------------- ⑤ 
+	v_result := '입력 완료!!'; 
+	
+	end if; 
+	
+	EXCEPTION 
+	-------------⑥ 
+	WHEN OTHERS THEN ROLLBACK; v_result := 'ERROR 발생'; 
+	
+END; /
+```
+
+## **5. User Defined Function의 생성과 활용**
+
+말 그대로 사용자 정의 함수이다. 프로시저와 거의 비슷한데, 하나 다른점은 함수이므로 반드시 하나의 return 값이 존재한다는 점이다.
+
+코드는 다음과 같다.
+
+```sql
+CREATE OR REPLACE Function UTIL_ABS (v_input in number) 
+
+---------------- ① 
+return NUMBER IS v_return number := 0; 
+
+---------------- ② 
+BEGIN 
+
+	if v_input < 0 then 
+	---------------- ③ 
+	v_return := v_input * -1; 
+	else v_return := v_input; 
+	end if; 
+	RETURN v_return; 
+
+---------------- ④ 
+END; /
+```
+
 # 궁금한 내용 / 부족한 내용
 
 
