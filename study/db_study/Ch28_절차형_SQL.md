@@ -144,6 +144,14 @@ CREATE OR REPLACE Trigger SUMMARY_SALES
 
 스읍… 이것도 솔직히 쓸 일이 있을지 모르겠다..
 
+## **7. 프로시저와 트리거의 차이점**
+
+- 프로시저
+   - BEGIN ~ END 절 내에 COMMIT, ROLLBACK과 같은 트랜잭션 종료 명령어를 사용 가능
+
+- 데이터베이스 트리거
+   - BEGIN ~ END 절 내에 사용 불가능
+
 # 궁금한 내용 / 부족한 내용
 
 
