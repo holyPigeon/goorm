@@ -35,7 +35,31 @@ SQL 최적화란 무엇일까. 말 그대로 사용자가 요청한 SQL을 최�
 
 이 때, 캐시에서 SQL을 찾기 위해 사용되는 키 값이 “SQL 문장 그 자체”이다. 결과적으로 같은 의미일지라도, 중간에 작은 공백 하나라도 들어가면 DBMS는 해당 문장을 다른 문장으로 인식한다.
 
+### 실행계획을 공유하지 못하는 경우
 
+다음과 같은 케이스들은 모두 다른 SQL로 인식한다.
+
+- 공백 문자 또는 줄바꿈
+  - SELECT * FROM CUSTOMER;SELECT * FROM CUSTOMER;
+- 대소문자 구분
+  - SELECT * FROM CUSTOMER; SELECT * FROM Customer;
+- 주석(Comment)
+  - SELECT * FROM CUSTOMER; SELECT /* 주석문 */ * FROM CUSTOMER;
+- 테이블 Owner 명시
+  - SELECT * FROM CUSTOMER; SELECT * FROM HR.CUSTOMER;
+- 옵티마이져 힌트 사용
+  - SELECT * FROM CUSTOMER; SELECT /*+ all_rows */ * FROM CUSTOMER;
+- 조건절 비교 값
+  - SELECT * FROM CUSTOMER WHERE LOGIN_ID = 'tommy';
+  - SELECT * FROM CUSTOMER WHERE LOGIN_ID = 'karajan';
+  - SELECT * FROM CUSTOMER WHERE LOGIN_ID = 'javaking';
+  - SELECT * FROM CUSTOMER WHERE LOGIN_ID = 'oraking';
+
+그냥 단 한 글자라도 틀리지 말고 똑같이 써야 캐싱된 실행계획을 활용함으로써 자원을 아낄 수 있다.
+
+개발 초기에 SQL 표준을 정해두는 것도 방법이며, 특히 6번 조건절 비교 값의 경우 라이브러리 캐시 효율적으로 매우 안 좋은 상황이 발생할 수 있기 때문에 조심하는 것이 좋다.
+
+(6번과 같은 경우를 리터럴 SQL이라 부른다)
 
 
 
