@@ -87,7 +87,19 @@ SELECT * FROM CUSTOMER WHERE LOGIN_ID = :LOGIN_ID;
 
 “바인드 변수 Peaking”이라는 기능이 있다.
 
+## 4. **Static SQL과 Dynamic SQL**
 
+### Static SQL
+
+String형 변수에 담지 않고 코드 사이에 직접 기술한 SQL을 말한다.
+
+### Dynamic SQL
+
+String형 변수에 담아서 기술하는 SQL을 말한다.
+
+Static SQL과 Dynamic SQL은 옵티마이저 입장에서는 아무런 차이가 없다.
+
+언어별로 구분하는 경우도 있다.
 
 
 
