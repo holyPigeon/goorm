@@ -38,7 +38,123 @@ Recursive Call의 경우 SQL 파싱과 최적화 과정에서 발생하는 다�
 
 Recursive Call을 최대한 줄이려면, 1차적으로 바인드 변수를 적극적으로 사용함으로써 하드파싱 횟수를 최대한 줄이는 것이 좋다. 2차적으로는 “사용자 정의 함수 / 프로시저 / 트리거”를 적절하게 활용해야 한다.
 
+## 2. 데이터베이스 Call과 성능
 
+### One SQL 구현의 중요성
+
+One SQL을 사용하면 굉장한 성능상의 향상이 있다고 한다. 그 예를 살펴보자…
+
+1번 코드 → 최대 110만번의 Call 발생
+
+```java
+public class JavaLoopQuery{ 
+	public static void insertData(
+	Connection con , 
+	String param1 , 
+	String param2 , 
+	String param3 , 
+	long param4
+	) throws Exception{ 
+	
+		String SQLStmt = "INSERT INTO 납입방법별_월요금집계 " 
+		+ "(고객번호, 납입월, 납입방법코드, 납입금액) " 
+		+ "VALUES(?, ?, ?, ?)"; 
+		
+		PreparedStatement st = con.prepareStatement(SQLStmt); 
+		st.setString(1, param1); 
+		st.setString(2, param2); 
+		st.setString(3, param3); 
+		st.setLong(4, param4); 
+		st.execute(); 
+		st.close(); 
+	} 
+	
+	public static void execute(
+		Connection con, 
+		String input_month
+	) throws Exception { 
+	
+		String SQLStmt = "SELECT 고객번호, 납입월, 지로, 자동이체, 신용카드, 핸드폰, 인터넷 " 
+		+ "FROM 월요금납부실적 " 
+		+ "WHERE 납입월 = ?"; 
+		
+		PreparedStatement stmt = con.prepareStatement(SQLStmt); 
+		stmt.setString(1, input_month); 
+		ResultSet rs = stmt.executeQuery(); 
+		
+		while(rs.next()){ 
+			String 고객번호 = rs.getString(1); 
+			String 납입월 = rs.getString(2); 
+			long 지로 = rs.getLong(3); 
+			long 자동이체 = rs.getLong(4); 
+			long 신용카드 = rs.getLong(5); 
+			long 핸드폰 = rs.getLong(6); 
+			long 인터넷 = rs.getLong(7); 
+			
+			if(지로 > 0) insertData (con, 고객번호, 납입월, "A", 지로); 
+			if(자동이체 > 0) insertData (con, 고객번호, 납입월, "B", 자동이체); 
+			if(신용카드 > 0) insertData (con, 고객번호, 납입월, "C", 신용카드); 
+			if(핸드폰 > 0) insertData (con, 고객번호, 납입월, "D", 핸드폰); 
+			if(인터넷 > 0) insertData (con, 고객번호, 납입월, "E", 인터넷); 
+		} 
+		
+		rs.close(); 
+		stmt.close(); 
+	} 
+	
+	static Connection getConnection() throws Exception { …… } 
+	static void releaseConnection(Connection con) throws Exception { …… } 
+	
+	public static void main(String[] args) throws Exception{ 
+	
+		Connection con = getConnection(); 
+		execute(con, "200903"); 
+		releaseConnection(con); 
+	} 
+}
+```
+
+2번 코드 → 단 2회의 Call 발생 (Parse Call 1회, Execute Call 1회)
+
+```java
+public class JavaOneSQL{ 
+	public static void execute(
+		Connection con, 
+		String input_month) throws Exception { 
+			String SQLStmt = "INSERT INTO 납입방법별_월요금집계" 
+			+ "(납입월,고객번호,납입방법코드,납입금액) " 
+			+ "SELECT x.납입월, x.고객번호, CHR(64 + Y.NO) 납입방법코드 " 
+			+ " , DECODE(Y.NO, 1, 지로, 2, 자동이체, 3, 신용카드, 4, 핸드폰, 5, 인터넷) " 
+			+ "FROM 월요금납부실적 x, (SELECT LEVEL NO FROM DUAL CONNECT BY LEVEL <= 5) y " 
+			+ "WHERE x.납입월 = ? " 
+			+ "AND y.NO IN ( DECODE(지로, 0, NULL, 1), DECODE(자동이체, 0, NULL, 2) " 
+			+ " , DECODE(신용카드, 0, NULL, 3) , DECODE(핸드폰, 0, NULL, 4) " 
+			+ " , DECODE(인터넷, 0, NULL, 5) )"; 
+			
+			PreparedStatement stmt = con.prepareStatement(SQLStmt); 
+			stmt.setString(1, input_month); 
+			stmt.executeQuery(); 
+			stmt.close(); 
+		} 
+		
+		static Connection getConnection() throws Exception { …… } 
+		static void releaseConnection(Connection con) throws Exception { …… } 
+		
+		public static void main(String[] args) throws Exception{ 
+			Connection con = getConnection(); 
+			execute(con, "200903"); 
+			releaseConnection(con); 
+		} 
+	}
+```
+
+→ 요약하자면, DB 입장에서 “간단한 쿼리를 반복해서 여러 번 날리는 것”이 “거대한 쿼리를 한 번에 날리는 것”보다 부담이 훨씬 크기 때문에 One SQL을 꼭 지향해야 한다.
+
+사실 110만번 ↔ 2번이라는 Call 횟수 차이부터가 말도 안되기 때문에 “훨씬” 이란 말로도 부족한 것 같다. 차이가 압도적이다…!
+
+### 데이터베이스 Call과 시스템 확장성
+
+역시 DB Call을 줄이면 시스템의 처리 부하가 대폭 감소하며, 시스템의 확장성이 크게 향상된다는 얘기이다.
 
 
 
