@@ -184,11 +184,15 @@ DBMS는 클라이언트에게 데이터를 전송할 때 “한 번에 모든 �
 
 다음과 같이, Fetch Count가 줄어들수록 Block I/O 또한 줄어드는 효과가 있다.
 
-!https://dataonair.or.kr/publishing/img/knowledge/SQL_271.jpg
+![](https://dataonair.or.kr/publishing/img/knowledge/SQL_271.jpg)
 
 그런데 주목할 점은, Array Size가 무작정 커진다고 해서 블록 I/O가 그만큼 적어지지 않는다는 것이다. 위 자료를 보면 Array Size = 100 이하부터는 블록 I/O에도 큰 변화가 없다.
 
+## 5. 페이지 처리 활용
 
+앞의 Fetch Call 내용을 참고해 Pagination을 구현 및 활용할 수 있다.
+
+장점은 뭐 당연히 어마무시하고, 구현 같은 경우는 JPA에서 지원해주기 때문에 잠시 넘어가도록 하겠다..
 
 
 
