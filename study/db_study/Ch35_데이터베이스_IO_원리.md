@@ -77,7 +77,19 @@ ex. **`object_name = 'ALL_OBJECTS'`** 와 같은 조건을 사용하여 Table Fu
 
 인덱스를 이용하더라도 해당 인덱스가 완벽하게 최적화되지 않았다면 Random 엑세스가 크게 발생하는 경우가 있으므로, 적절한 칼럼을 가진 인덱스를 생성하고 이용하는 것이 좋다.
 
+## 4. **Single Block I/O vs. MultiBlock I/O**
 
+1. Single Block I/O는 I/O Call 한 번에 하나의 데이터 블록만 읽어 메모리에 적재하는 방식
+2. MultiBlock I/O는 I/O Call이 필요한 시점에, 인접한 블록들을 같이 읽어 메모리에 적재하는 방식
+
+   을 뜻한다.
+
+
+Table Full Scan 시에는 MultiBlock I/O 방식이 유리하며, 인덱스 스캔 시에는 Single Block I/O 방식이 유리하다.
+
+인덱스 스캔 시에 MultiBlock I/O 방식을 사용하지 않는 이유는, 인덱스에 있는 블록들의 논리적인 순서가 실제 물리적인 순서와는 차이가 있기 때문이다.
+
+(보기에는 붙어있는 것처럼 보이지만, 사실은 많이 떨어져있을 수도 있다는 얘기다.)
 
 
 
