@@ -48,7 +48,11 @@ Lock의 종류에는 기본적으로 공유 Lock과 배타 Lock이 있다. 읽�
 
 하지만 애초에 이러한 상황을 방지하려면, 위의 Lock 튜닝 방안을 이용하거나, 여러 테이블 접근 시에 접근 순서를 명시해주는 등의 조치가 필요하다.
 
+## 2. Oracle Lock
 
+오라클에서는 DML Lock, DDL Lock, 래치(Latch), 버퍼 Lock, 라이브러리 캐시 Lock/Pin 등 다양한 종류의 Lock을 제공한다. 하지만 이 중에 가장 중요한 건 당연 DML Lock이다.
+
+DML Lock에는 Row Lock과 Table Lock이 있다.
 
 
 
