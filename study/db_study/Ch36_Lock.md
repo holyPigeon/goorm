@@ -72,7 +72,9 @@ DML Lock에는 Row Lock과 Table Lock이 있다.
 
 ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/5486ac02-837a-4340-b853-a8cd7b03f65f/f1e2ea8f-cc43-48b5-a6c0-029c0b94e9a4/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-04-14_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_4.23.42.png)
 
+# 궁금한 내용 / 부족한 내용
 
+좀 모르는 내용이 있기는 한데… 딱히 궁금하지는 않다… Too Deep…
 
 
 
