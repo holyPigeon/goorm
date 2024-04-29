@@ -299,4 +299,60 @@ ORDER BY
   일련번호
 ```
 
+## 6. With 구문 활용
 
+최신 문법인 With 구문 역시 활용 가능하다.
+
+```sql
+WITH 위험고객카드 AS (
+  SELECT 카드.카드번호
+  FROM 카드
+  JOIN 고객 ON 고객.고객번호 = 카드.고객번호
+  WHERE 카드.카드번호객여부 = 'Y'
+)
+SELECT v.*
+FROM (
+  SELECT a.카드번호 AS 카드번호,
+         SUM(a.거래금액) AS 거래금액,
+         NULL AS 현금서비스잔액,
+         NULL AS 해외거래금액
+  FROM 카드거래내역 a
+  JOIN 위험고객카드 b ON a.카드번호 = b.카드번호
+  GROUP BY a.카드번호
+
+  UNION ALL
+
+  SELECT a.카드번호 AS 카드번호,
+         NULL AS 거래금액,
+         SUM(a.amt) AS 현금서비스금액,
+         NULL AS 해외거래금액
+  FROM (
+    SELECT a.카드번호 AS 카드번호,
+           SUM(a.거래금액) AS amt
+    FROM 현금거래내역 a
+    JOIN 위험고객카드 b ON a.카드번호 = b.카드번호
+    GROUP BY a.카드번호
+
+    UNION ALL
+
+    SELECT a.카드번호 AS 카드번호,
+           SUM(a.결재금액) * -1 AS amt
+    FROM 현금결재내역 a
+    JOIN 위험고객카드 b ON a.카드번호 = b.카드번호
+    GROUP BY a.카드번호
+  ) a
+  GROUP BY a.카드번호
+
+  UNION ALL
+
+  SELECT a.카드번호 AS 카드번호,
+         NULL AS 거래금액,
+         NULL AS 현금서비스금액,
+         SUM(a.거래금액) AS 해외거래금액
+  FROM 해외거래내역 a
+  JOIN 위험고객카드 b ON a.카드번호 = b.카드번호
+  GROUP BY a.카드번호
+) v
+```
+
+상당히 끔찍한 모습이다…
