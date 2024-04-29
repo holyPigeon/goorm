@@ -225,7 +225,40 @@ WHERE ROWNUM <= 11
 ORDER BY 거래일시
 ```
 
+### Union All 활용
 
+Union All을 활용하면 아래와 같이 하나의 SQL로 처리하는 것도 가능하다.
+
+```sql
+-- 'NEXT' 페이지에서 거래 데이터 조회
+SELECT 거래일시, 체결건수, 체결수량, 거래대금
+FROM (
+  SELECT 거래일시, 체결건수, 체결수량, 거래대금
+  FROM 시간별종목거래
+  WHERE :페이지이동 = 'NEXT' -- 'NEXT' 입력 시 첫 페이지도 이를 사용
+    AND 종목코드 = :isu_cd
+    AND 거래일시 >= :trd_time
+  ORDER BY 거래일시
+)
+WHERE ROWNUM <= 11
+
+UNION ALL
+
+-- 'PREV' 페이지에서 거래 데이터 조회
+SELECT 거래일시, 체결건수, 체결수량, 거래대금
+FROM (
+  SELECT 거래일시, 체결건수, 체결수량, 거래대금
+  FROM 시간별종목거래
+  WHERE :페이지이동 = 'PREV'
+    AND 종목코드 = :isu_cd
+    AND 거래일시 <= :trd_time
+  ORDER BY 거래일시 DESC
+)
+WHERE ROWNUM <= 11
+
+-- 결과 정렬
+ORDER BY 거래일시
+```
 
 
 
