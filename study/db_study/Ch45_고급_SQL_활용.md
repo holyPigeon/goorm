@@ -188,7 +188,42 @@ SELECT * FROM (
 WHERE NO BETWEEN (:page - 1) * :pgsize + 1 AND :pgsize * :page
 ```
 
+### 뒤쪽 페이지까지 자주 조회할 때
 
+페이징 처리 자체가 사용자가 자주 조회할만한 앞 쪽 부분을 우선적으로 보여주는 것이기 때문에, 뒤쪽 페이지까지 자주 조회한다면 위 쿼리는 비효율적이게 된다.
+
+→ 이러한 상황에서는 뒤쪽 페이지로 이동할 때 앞쪽의 레코드를 거치지 않고 바로 이동해야한다.
+
+다음 버튼을 눌렀을 때
+
+```sql
+SELECT 거래일시, 체결건수, 체결수량, 거래대금
+FROM (
+  SELECT 거래일시, 체결건수, 체결수량, 거래대금
+  FROM 시간별종목거래 A
+  WHERE :페이지이동 = 'NEXT' 
+    AND 종목코드 = :isu_cd
+    AND 거래일시 >= :trd_time
+  ORDER BY 거래일시
+)
+WHERE ROWNUM <= 11
+```
+
+이전 버튼을 눌렀을 때
+
+```sql
+SELECT 거래일시, 체결건수, 체결수량, 거래대금
+FROM (
+  SELECT 거래일시, 체결건수, 체결수량, 거래대금
+  FROM 시간별종목거래 A
+  WHERE :페이지이동 = 'PREV'
+    AND 종목코드 = :isu_cd
+    AND 거래일시 <= :trd_time
+  ORDER BY 거래일시 DESC
+)
+WHERE ROWNUM <= 11
+ORDER BY 거래일시
+```
 
 
 
