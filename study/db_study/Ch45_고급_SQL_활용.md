@@ -260,6 +260,43 @@ WHERE ROWNUM <= 11
 ORDER BY 거래일시
 ```
 
+## 5. 윈도우 함수 활용
 
+!https://dataonair.or.kr/publishing/img/knowledge/SQL_503.jpg
+
+상태코드가 NULL이면 가장 최근에 상태코드가 바뀐 레코드의 값을 보여주는 식이다.
+
+```sql
+SELECT 
+  일련번호, 
+  측정값,
+  (
+    SELECT /*+ index_desc(장비측정 장비측정_idx) */ 상태코드
+    FROM 장비측정
+    WHERE 일련번호 <= o.일련번호 
+      AND 상태코드 IS NOT NULL
+      AND ROWNUM <= 1
+  ) AS 상태코드
+FROM 
+  장비측정 o
+ORDER BY 
+  일련번호
+```
+
+앞쪽 결과만이 아닌 전체 결과를 확인해야 한다면, 아래 쿼리가 더 효율적이다.
+
+```sql
+SELECT 
+  일련번호, 
+  측정값,
+  LAST_VALUE(상태코드 IGNORE NULLS) OVER (
+    ORDER BY 일련번호 
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS 상태코드
+FROM 
+  장비측정
+ORDER BY 
+  일련번호
+```
 
 
