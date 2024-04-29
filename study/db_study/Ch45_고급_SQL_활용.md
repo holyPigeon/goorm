@@ -95,7 +95,74 @@ select * from emp a,
 	 ) b;
 ```
 
+## **3. Union All을 활용한 M:M 관계의 조인**
 
+보통 M:M 관계의 경우, 그대로 조인하면 카티션 곱이 발생하므로 좋지 않다.
+
+!https://dataonair.or.kr/publishing/img/knowledge/SQL_501.jpg
+
+위와 같은 두 테이블을 조인하는 경우, 상품과 연월을 기준으로 group by를 먼저 수행하면 두 집합이 1:1 관계가 되기 때문에 Full Outer Join을 통해 원하는 결과집합을 얻을 수 있다.
+
+```sql
+select 
+nvl(a.상품, b.상품) as 상품 , 
+nvl(a.계획연월, b.판매연월) as 연월 , 
+nvl(계획수량, 0) 계획수량 , 
+nvl(판매수량, 0) 판매수량 
+from ( 
+			select 상품, 계획연월, sum(계획수량) 계획수량 
+			from 부서별판매계획 
+			where 계획연월 between '200901' and '200903' 
+			group by 상품, 계획연월 
+		 ) a 
+		 full outer join 
+		 ( 
+			 select 상품, 판매연월, sum(판매수량) 판매수량 
+			 from 채널별판매실적 
+			 where 판매연월 between '200901' and '200903' 
+			 group by 상품, 판매연월 ) b 
+			on a.상품 = b.상품 and a.계획연월 = b.판매연월
+```
+
+하지만 이 방식은 DBMS 버전에 따라 같은 테이블에 2번씩 엑세스하는 등 비효율적인 부분이 있다. Union All을 이용하여 보다 효율적으로 바꿀 수 있다.
+
+```sql
+select 
+	상품, 
+	연월, 
+	nvl(sum(계획수량), 0) as 계획수량, 
+	nvl(sum(실적수량), 0) as 실적수량 
+from ( 
+			select 
+				상품, 
+				계획연월 as 연월, 
+				계획수량, 
+				to_number(null) as 실적수량 
+			from 부서별판매계획 
+			where 계획연월 between '200901' and '200903' 
+			union all 
+			select 
+				상품, 
+				판매연월 as 연월, 
+				to_number(null) as 계획수량, 
+				판매수량 
+			from 채널별판매실적 
+			where 판매연월 between '200901' and '200903' 
+			) a 
+group by 상품, 연월; 
+
+상품 연월 계획수량 판매수량 
+---- ------ ------- ------ 
+상품A 200901 10000 7000 
+상품A 200902 5000 0 
+상품A 200903 20000 8000 
+상품B 200901 20000 0 
+상품B 200902 15000 12000 
+상품B 200903 0 19000 
+상품C 200901 15000 13000 
+상품C 200902 0 18000 
+상품C 200903 20000 0
+```
 
 
 
