@@ -163,7 +163,30 @@ group by 상품, 연월;
 상품C 200902 0 18000 
 상품C 200903 20000 0
 ```
+## 4. 페이징 처리
 
+데이터베이스 Call과 네트워크 부하를 줄이기 위해서는 페이징 처리를 활용하는 것이 굉장히 중요하다. 페이징 처리 사례를 알아보자.
+
+### 일반적인 페이징 처리용 SQL
+
+![](https://dataonair.or.kr/publishing/img/knowledge/SQL_502.jpg)
+
+위 예시에 대한 페이징 처리 방식의 쿼리를 알아보자.
+
+```sql
+SELECT * FROM (
+  SELECT ROWNUM NO, 거래일시, 체결건수, 체결수량, 거래대금, COUNT(*) OVER () CNT
+  FROM (
+    SELECT 거래일시, 체결건수, 체결수량, 거래대금 
+    FROM 시간별종목거래
+    WHERE 종목코드 = :isu_cd       -- 사용자가 입력한 종목코드
+      AND 거래일시 >= :trd_time    -- 사용자가 입력한 거래일자 또는 거래일시
+    ORDER BY 거래일시
+  )
+  WHERE ROWNUM <= :page * :pgsize + 1
+) 
+WHERE NO BETWEEN (:page - 1) * :pgsize + 1 AND :pgsize * :page
+```
 
 
 
