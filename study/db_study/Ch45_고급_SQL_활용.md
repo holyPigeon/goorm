@@ -62,3 +62,46 @@ GROUP BY 고객번호, 납입월;
 ```
 
 추가적으로 Pivot 구문을 이용해서도 비슷한 쿼리를 짤 수 있다.
+
+## 2. 데이터 복제 기법 활용
+
+테이블 복제 기법을 활용해야 할 경우가 가끔 있는데, 전통적으로는 아래와 같이 복제용 테이블을 만들어놓고 활용했다.
+
+```sql
+create table copy_t ( no number, no2 varchar2(2) ); 
+
+insert into copy_t 
+select rownum, lpad(rownum, 2, '0') 
+from big_table where rownum <= 31; 
+
+alter table copy_t add constraint copy_t_pk primary key(no); 
+create unique index copy_t_no2_idx on copy_t(no2);
+```
+
+반면 아래와 같이 조건절 없는 조인(Cross Join)을 활용할 경우, 카티션 곱에 의해 데이터가 2배 복제된다.
+
+```sql
+select * from emp a, copy_t b where b.no <= 2;
+```
+
+오라클 최신 버전에서는 dual 테이블을 사용할 수도 있다.
+
+```sql
+select * from emp a, 
+	(
+		select rownum 
+		no from dual 
+		connect by level <= 2
+	 ) b;
+```
+
+
+
+
+
+
+
+
+
+
+
