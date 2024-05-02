@@ -37,3 +37,7 @@ insert into 주문 select * from 주문_임시;
 alter table 주문 add constraint 주문_pk primary key(고객번호, 주문일시); 
 create index 주문_idx1 on 주문(주문일시, 상태코드);
 ```
+
+# 궁금한 내용 / 부족한 내용
+
+# 느낀 점
